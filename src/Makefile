@@ -170,7 +170,11 @@ LDFLAGS =
 # Cuda on LLNL CORAL EA nodes
 ###############################################################################
 ## Choose one Cuda path
-CUDA_PATH = /usr/local/cuda
+ifndef CUDA_HOME
+	CUDA_PATH = /usr/local/cuda
+else
+	CUDA_PATH = $(CUDA_HOME)
+endif
 #CUDA_PATH = /usr/tcetmp/packages/cuda-9.0.176
 
 HOST_COMPILER = gcc
@@ -187,7 +191,7 @@ CUDA_LDFLAGS = -L${CUDA_PATH}/lib64/ -lcuda -lcudart
 
 CXX=$(CUDA_PATH)/bin/nvcc
 CXXFLAGS = -DHAVE_CUDA -std=c++11 $(OPTFLAGS) -Xptxas -v 
-CXXFLAGS += -gencode=arch=compute_70,code=\"sm_70,compute_70\" 
+CXXFLAGS += -gencode=arch=compute_90,code=\"sm_90,compute_90\" 
 CXXFLAGS += --compiler-bindir=$(HOST_COMPILER)
 CPPFLAGS = -x cu -dc
 LDFLAGS  = $(CUDA_LDFLAGS) 
